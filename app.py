@@ -368,7 +368,20 @@ if sections["Statuts emploi"]:
 
 @st.cache_data
 def charger_logement():
-    df = pd.read_csv("base-cc-logement-2021.csv", sep=";", encoding="latin1", low_memory=False)
+    df = pd.read_csv("base-cc-logement-2021.csv", sep=";", encoding="latin1")
+
+    # Vérification des types de données et de l'existence de valeurs manquantes
+    df['P21_LOG'] = pd.to_numeric(df['P21_LOG'], errors='coerce')
+    df['P21_RSECOCC'] = pd.to_numeric(df['P21_RSECOCC'], errors='coerce')
+    df['P21_LOGVAC'] = pd.to_numeric(df['P21_LOGVAC'], errors='coerce')
+    df['P21_MAISON'] = pd.to_numeric(df['P21_MAISON'], errors='coerce')
+    df['P21_APPART'] = pd.to_numeric(df['P21_APPART'], errors='coerce')
+    
+    # Suppression des lignes où une colonne essentielle a une valeur manquante
+    df_cleaned = df.dropna(subset=['P21_LOG', 'P21_RSECOCC', 'P21_LOGVAC', 'P21_MAISON', 'P21_APPART'])
+    
+    # Afficher les 10 premières lignes pour vérifier
+    print(df_cleaned.head())
     df = df[["CODGEO", "P21_RP", "P21_LOGVAC", "P21_RSECOCC", "P21_MAISON", "P21_APPART"]]
     df.columns = ["code_insee", "res_principales", "log_vacants", "res_secondaires", "maisons", "appartements"]
     df[["res_principales", "log_vacants", "res_secondaires", "maisons", "appartements"]] = df[
