@@ -376,7 +376,9 @@ def charger_logement():
     df['P21_LOGVAC'] = pd.to_numeric(df['P21_LOGVAC'], errors='coerce')
     df['P21_MAISON'] = pd.to_numeric(df['P21_MAISON'], errors='coerce')
     df['P21_APPART'] = pd.to_numeric(df['P21_APPART'], errors='coerce')
-    
+    # Nettoyer les noms de colonnes en supprimant les espaces et caractères invisibles
+    df.columns = df.columns.str.strip()
+
     # Suppression des lignes où une colonne essentielle a une valeur manquante
     df_cleaned = df.dropna(subset=['P21_LOG', 'P21_RSECOCC', 'P21_LOGVAC', 'P21_MAISON', 'P21_APPART'])
     
