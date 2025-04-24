@@ -92,7 +92,7 @@ sections = {
 
 @st.cache_data
 def charger_villes():
-    df = pd.read_csv("C:/Users/portable/Documents/SAE_OD/communes.csv", sep=",")
+    df = pd.read_csv("communes.csv", sep=",")
     df = df[df["population"] > 20000]  # filtrage
     return df.sort_values(by="population", ascending=False)
     
